@@ -97,8 +97,8 @@ jobs:
     - name: Upload APK
       uses: actions/upload-artifact@v2
       with:
-        name: output.apk
-        path: app/build/outputs/apk/*.apk
+        name: app-debug.apk
+        path: app/build/outputs/apk/debug/*.apk
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
