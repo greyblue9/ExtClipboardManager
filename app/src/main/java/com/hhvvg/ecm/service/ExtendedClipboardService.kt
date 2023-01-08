@@ -105,20 +105,24 @@ class ExtendedClipboardService(
     }
 
     private fun onClipboardSet(data: ClipData, packageName: String, userId: Int) {
-        if (true) {
-            val item = data.getItemAt(0)
-            val text = item.getText().toString()
+        var i = 0
+        while (i < data.getItemCount()) {
+            val item = data.getItemAt(i)
+            i += 1
+            val text_cs = item.coerceToText(context)
+            val text = text_cs.toString()
             /*
             val uri = android.net.Uri.parse(
                "data:text/plain;base64,".plus(
                    String(java.util.Base64.getEncoder().encode(text.toString().toByteArray()))))           
             */
-            val dir = java.io.File("/storage/emulated/0/clipboard")
+            val top = context.getFilesDir()
+            val dir = java.io.File(top, "clipboard")
             if (!dir.exists()) dir.mkdirs()
             val fos = java.io.FileOutputStream(
               java.io.File(
                 dir,
-                java.lang.String.format("%d.txt", System.currentTimeMillis())
+                java.lang.String.format("clip_%d.txt", System.currentTimeMillis())
               )
             )
             fos.write(text.toByteArray())
