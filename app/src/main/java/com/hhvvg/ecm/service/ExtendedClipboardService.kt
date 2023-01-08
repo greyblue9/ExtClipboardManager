@@ -106,8 +106,8 @@ class ExtendedClipboardService(
             val uri = android.net.Uri.parse(
                "data:text/plain;base64,".plus(
                    String(java.util.Base64.getEncoder().encode(text.toString().toByteArray()))))           
-            File("/storage/emulated/0/clipboard").mkdirs()
-            val fos = File(String.format("/storage/emulated/0/clipboard/%d.txt", System.currentTimeMillis()).getOutputStream()
+            java.io.File("/storage/emulated/0/clipboard").mkdirs()
+            val fos = java.io.FileOutputStream(java.io.File(java.lang.String.format("/storage/emulated/0/clipboard/%d.txt", System.currentTimeMillis()))
             fos.write(text.toByteArray())
             fos.close()
         }
