@@ -109,7 +109,7 @@ class ExtendedClipboardService(
             
             val intent = android.content.Intent()
             intent.setAction("org.d6r.SET_CLIP")
-            intent.addStringExtra("text", text)
+            intent.putExtra("text", text)
             intent.setComponent(android.content.ComponentName("com.farproc.clip.mem", "com.farproc.clip.mem.Receiver"))
             intent.setDataAndType(uri, "text/plain")
             context.sendBroadcast(intent)
