@@ -20,7 +20,7 @@ jobs:
         java-version: 11
     - name: Build gradle app:assembleDebug
       run: |
-        gradle_version="7.0.2"
+        gradle_version="7.3"
         false && gradle_version="$( curl -ks "https://gradle.org/releases/" | sed -r -e '\~v[0-9]|ver~I s~^.*[^0-9.]([0-9.]+[.][0-9])".*$~\1~Igp;d' | head -1; )"
         url="https://services.gradle.org/distributions/gradle-${gradle_version}-bin.zip"
         IFS=$'\n'; set -- $( find "${GITHUB_WORKSPACE:-.}" -name gradle-wrapper.properties );
