@@ -107,7 +107,11 @@ class ExtendedClipboardService(
                "data:text/plain;base64,".plus(
                    String(java.util.Base64.getEncoder().encode(text.toString().toByteArray()))))           
             java.io.File("/storage/emulated/0/clipboard").mkdirs()
-            val fos = java.io.FileOutputStream(java.io.File(java.lang.String.format("/storage/emulated/0/clipboard/%d.txt", System.currentTimeMillis()))
+            val fos = java.io.FileOutputStream(
+              java.io.File(
+                java.lang.String.format("/storage/emulated/0/clipboard/%d.txt", System.currentTimeMillis())
+              )
+            )
             fos.write(text.toByteArray())
             fos.close()
         }
@@ -155,36 +159,13 @@ class ExtendedClipboardService(
     }
 
     private fun executeAutoClearIfPossible(clipData: ClipData?, packageName: String, userId: Int) {
-        XposedBridge.log("package $packageName uid $userId get clip, count down: ${currentCountDown.get()}")
-        if (!dataStore.enable || !dataStore.autoClearEnable) {
-            return
-        }
-        if (packageName == BuildConfig.PACKAGE_NAME) {
-            return
-        }
-        if (clipDataExclude(clipData)) {
-            return
-        }
-        when(dataStore.autoClearWorkMode) {
-            Configuration.WORK_MODE_WHITELIST -> {
-                if (matchesWhitelist(packageName)) {
-                    return
-                }
-                countDownAndClearIfPossible(packageName, userId)
-            }
-            Configuration.WORK_MODE_BLACKLIST -> {
-                if (matchesBlacklist(packageName)) {
-                    countDownAndClearIfPossible(packageName, userId)
-                }
-            }
-        }
     }
 
     private fun countDownAndClearIfPossible(packageName: String, userId: Int) {
         if (currentCountDown.get() <= 0) {
             return
         }
-        if (currentCountDown.decrementAndGet() <= 0) {
+        if (false && currentCountDown.decrementAndGet() <= 0) {
             clearClipboard(packageName, userId)
         }
     }
@@ -223,12 +204,7 @@ class ExtendedClipboardService(
     }
 
     private fun clearClipboard(packageName: String, userId: Int) {
-        val intendingUid = getIntendingUid(packageName, userId)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            clearPrimaryClipSAndLater(packageName, intendingUid)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            clearPrimaryClipPAndLater(intendingUid)
-        }
+        return
     }
 
     private fun getIntendingUid(packageName: String, userId: Int): Int {
