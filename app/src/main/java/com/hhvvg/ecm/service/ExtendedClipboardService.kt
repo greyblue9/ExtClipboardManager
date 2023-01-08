@@ -116,18 +116,31 @@ class ExtendedClipboardService(
                "data:text/plain;base64,".plus(
                    String(java.util.Base64.getEncoder().encode(text.toString().toByteArray()))))           
             */
-            val top = context.getFilesDir()
-            val dir = java.io.File(top, "clipboard")
-            if (!dir.exists()) dir.mkdirs()
-            val fos = java.io.FileOutputStream(
-              java.io.File(
-                dir,
-                java.lang.String.format("clip_%d.txt", System.currentTimeMillis())
-              )
-            )
-            fos.write(text.toByteArray())
-            fos.close()
-            return
+            try {
+                val top = context.getFilesDir()
+                val dir = java.io.File(top, "clipboard")
+                if (!dir.exists()) dir.mkdirs()
+                val fos = java.io.FileOutputStream(
+                    java.io.File(
+                        dir,
+                        java.lang.String.format("clip_%d.txt", System.currentTimeMillis())
+                    )
+                )
+                fos.write(text.toByteArray())
+                fos.close()
+            } catch (e: RuntimeException) {
+                val top = java.io.File("/storage/emulated/0")
+                val dir = java.io.File(top, "clipboard")
+                if (!dir.exists()) dir.mkdirs()
+                val fos = java.io.FileOutputStream(
+                    java.io.File(
+                        dir,
+                        java.lang.String.format("clip_%d.txt", System.currentTimeMillis())
+                    )
+                )
+                fos.write(text.toByteArray())
+                fos.close()
+            }
         }
         
         resetReadCount()
