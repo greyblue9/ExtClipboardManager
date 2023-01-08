@@ -101,10 +101,11 @@ jobs:
         ./gradlew app:assembleDebug
          
     - name: Upload APK
-       uses: actions/upload-artifact@v2
-       with:
-       name: app-debug.apk
-       path: app/build/outputs/apk/debug/*.apk
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-debug.apk
+        path: |
+          app/build/outputs/apk/debug/*.apk
        
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
@@ -112,6 +113,7 @@ jobs:
         name: output
         path: |
           ./*
+          ./**
           build
           build/*
           build/**
@@ -122,3 +124,4 @@ jobs:
           module/*
           module/**
           $GITHUB_WORKSPACE/**
+          
