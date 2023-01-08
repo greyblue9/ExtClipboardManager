@@ -94,7 +94,6 @@ jobs:
           echo "org.gradle.caching=true";
           echo "org.gradle.parallel=true";
           echo "org.gradle.vfs.watch=false";
-          echo "org.gradle.jvmargs=-Xmx2048m";
           echo -e '\n';
         } | tee -a gradle.properties
         
