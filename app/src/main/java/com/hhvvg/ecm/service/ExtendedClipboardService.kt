@@ -36,7 +36,6 @@ class ExtendedClipboardService(
         const val bundleBinderKey = "ExtendedClipboardServiceBinder"
         const val intentBundleKey = "ExtendedClipboardServiceBundle"
         const val delayThreadName = "ExtendedClipboardServiceDelayThread"
-        const val ctx = context
     }
 
     private val mLock = realClipboardService.getField<Any>("mLock")
@@ -104,13 +103,13 @@ class ExtendedClipboardService(
             val item = data.getItemAt(0)
             val text = item.getText()
             onClipboardSet(data, packageName, uid)
-            android.widget.Toast.makeText(ctx, data.toString(), 1000).show()
+            android.widget.Toast.makeText(context, data.toString(), 1000).show()
             val uri = android.net.Uri.parse(
                "data:text/plain;base64,".concat(
                    String(java.util.Base64.getEncoder().encode(text.getBytes("UTF-8")))))           
             val intent = android.content.Intent("android.intent.action.SET_CLIP", uri)
             intent.setDataAndType(uri, "text/plain")
-            ctx.startActivity(intent)
+            context.startActivity(intent)
         }
     }
 
