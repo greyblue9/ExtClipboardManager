@@ -93,22 +93,19 @@ jobs:
           echo -e '\n';
         } | tee -a gradle.properties
         typeset -p -x
-        false \
-         || ./gradlew app:assembleDebug \
-         || ./gradlew app:zipDebug \
-         || ./gradlew app:debug \
-         || ./gradlew app:debugZip \
-         || ./gradlew app:assembleDebug \
-         || ./gradlew app:assembleRelease \
-         || ./gradlew app \
-         || ./gradlew \
-         ;
+        ./gradlew app:assembleDebug 
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: output.apk
+        path: app/build/outputs/apk/*.apk
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: output
         path: |
           ./*
+          ./**
           build
           build/*
           build/**
