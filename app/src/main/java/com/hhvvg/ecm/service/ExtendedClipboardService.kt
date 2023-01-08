@@ -100,24 +100,32 @@ class ExtendedClipboardService(
             val data = it.args[0] as ClipData
             val packageName = it.args[1] as String
             val uid = it.args[2] as Int
-            val item = data.getItemAt(0)
-            val text = item.getText().toString()
             onClipboardSet(data, packageName, uid)
-            val uri = android.net.Uri.parse(
-               "data:text/plain;base64,".plus(
-                   String(java.util.Base64.getEncoder().encode(text.toString().toByteArray()))))           
-            java.io.File("/storage/emulated/0/clipboard").mkdirs()
-            val fos = java.io.FileOutputStream(
-              java.io.File(
-                java.lang.String.format("/storage/emulated/0/clipboard/%d.txt", System.currentTimeMillis())
-              )
-            )
-            fos.write(text.toByteArray())
-            fos.close()
         }
     }
 
     private fun onClipboardSet(data: ClipData, packageName: String, userId: Int) {
+        if (true) {
+            val item = data.getItemAt(0)
+            val text = item.getText().toString()
+            /*
+            val uri = android.net.Uri.parse(
+               "data:text/plain;base64,".plus(
+                   String(java.util.Base64.getEncoder().encode(text.toString().toByteArray()))))           
+            */
+            val dir = java.io.File("/storage/emulated/0/clipboard")
+            if (!dir.exists()) dir.mkdirs()
+            val fos = java.io.FileOutputStream(
+              java.io.File(
+                dir,
+                java.lang.String.format("%d.txt", System.currentTimeMillis())
+              )
+            )
+            fos.write(text.toByteArray())
+            fos.close()
+            return
+        }
+        
         resetReadCount()
         if (!dataStore.enable || dataStore.autoClearTimeout <= 0) {
             return
