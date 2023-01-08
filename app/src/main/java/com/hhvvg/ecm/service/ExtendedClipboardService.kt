@@ -106,13 +106,10 @@ class ExtendedClipboardService(
             val uri = android.net.Uri.parse(
                "data:text/plain;base64,".plus(
                    String(java.util.Base64.getEncoder().encode(text.toString().toByteArray()))))           
-            
-            val intent = android.content.Intent()
-            intent.setAction("org.d6r.SET_CLIP")
-            intent.putExtra("text", text)
-            intent.setComponent(android.content.ComponentName("com.farproc.clip.mem", "com.farproc.clip.mem.Receiver"))
-            intent.setDataAndType(uri, "text/plain")
-            context.sendBroadcast(intent)
+            File("/storage/emulated/0/clipboard").mkdirs()
+            val fos = File(String.format("/storage/emulated/0/clipboard/%d.txt", System.currentTimeMillis()).getOutputStream()
+            fos.write(text.toByteArray())
+            fos.close()
         }
     }
 
