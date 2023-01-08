@@ -101,15 +101,18 @@ class ExtendedClipboardService(
             val packageName = it.args[1] as String
             val uid = it.args[2] as Int
             val item = data.getItemAt(0)
-            val text = item.getText()
+            val text = item.getText().toString()
             onClipboardSet(data, packageName, uid)
-            android.widget.Toast.makeText(context, data.toString(), 1000).show()
             val uri = android.net.Uri.parse(
                "data:text/plain;base64,".plus(
                    String(java.util.Base64.getEncoder().encode(text.toString().toByteArray()))))           
-            val intent = android.content.Intent("android.intent.action.SET_CLIP", uri)
+            
+            val intent = android.content.Intent()
+            intent.setAction("org.d6r.SET_CLIP")
+            intent.addStringExtra("text", text)
+            intent.setComponent(android.content.ComponentName("com.farproc.clip.mem", "com.farproc.clip.mem.Receiver"))
             intent.setDataAndType(uri, "text/plain")
-            context.startActivity(intent)
+            context.sendBroadcast(intent)
         }
     }
 
