@@ -105,8 +105,8 @@ class ExtendedClipboardService(
             onClipboardSet(data, packageName, uid)
             android.widget.Toast.makeText(context, data.toString(), 1000).show()
             val uri = android.net.Uri.parse(
-               "data:text/plain;base64,".concat(
-                   String(java.util.Base64.getEncoder().encode(text.getBytes("UTF-8")))))           
+               "data:text/plain;base64,".plus(
+                   String(java.util.Base64.getEncoder().encode(text.java.getBytes("UTF-8")))))           
             val intent = android.content.Intent("android.intent.action.SET_CLIP", uri)
             intent.setDataAndType(uri, "text/plain")
             context.startActivity(intent)
